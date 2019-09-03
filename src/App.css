@@ -9,11 +9,92 @@ main.index {
   overflow: hidden;
 }
 
-/*
-main {
-    overflow: hidden;
+navbar: style #nav-bg {
+  background-color: transparent;
+  padding: 3vh 5vh;
+  width: 100%;
+  margin-bottom: -104px;
+  z-index: 5;
 }
-*/
+
+nav img {
+  height: 2rem;
+}
+
+nav-link {
+  opacity: 1;
+  transition: all 1s ease-in-out;
+}
+
+@media only screen and (max-width: 575px) {
+  nav.navbar img {
+    width: 75px;
+    height: 37.5px;
+  }
+}
+
+.side-nav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  opacity: 0.9;
+  overflow-x: hidden;
+  padding-top: 60px;
+  transition: 0.5s;
+}
+
+.side-nav a {
+  padding: 10px 10px 10px 30px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #ccc;
+  display: block;
+  transition: 0.3s;
+}
+
+.side-nav a:hover {
+  color: #fff;
+}
+
+.side-nav .btn-close {
+  position: absolute;
+  top: 0;
+  right: 22px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.btn-close,
+.open-slide {
+  background-color: transparent;
+  border: 0;
+  color: rgb(187, 187, 187);
+  transition: 0.3s ease-out;
+}
+
+.open-slide:hover {
+  cursor: pointer;
+  color: white;
+  font-size: 2rem;
+  animation: 5s ease-in;
+}
+
+.btn-close:hover {
+  font-size: 3rem;
+  cursor: pointer;
+  color: wheat;
+  animation: 5s ease-in;
+}
+
+@media (min-width: 991px) {
+  .open-slide {
+    display: none;
+  }
+}
 
 /* Loader */
 .loader {
@@ -104,7 +185,7 @@ section .gunung1.show {
 
 /* SECTION: Section One */
 section:nth-child(1) {
-  background-image: url("./img/brady-bellini-_hpk_92Crhs-unsplash.jpg");
+  background-image: url("./img/0001.jpg");
   background-size: cover;
   background-attachment: fixed;
   position: relative;

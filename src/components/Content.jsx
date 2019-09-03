@@ -5,125 +5,112 @@ export default class Content extends Component {
   constructor() {
     super()
     this.state = {
-      judul: ""
+      judul: "",
+      sections: [],
+      up: null,
+      down: null,
+      index: 0,
+      lastTime: 0,
+      animationDuration: 1000
     }
   }
 
   componentDidMount() {
-    const sections = document.querySelectorAll("section")
-    const up = document.querySelector("#up")
-    const down = document.querySelector("#down")
+    this.setState({
+      section: document.querySelectorAll("section"),
+      up: document.querySelector("#up"),
+      down: document.querySelector("#down")
+    })
 
-    let index = 0
-    // let lastTime = 0
-    // const animationDuration = 1000
-
-    // Function for scroller
-    const displayArrow = (index, sections) => {
-      if (index < 1) {
-        up.style.opacity = 0
-      } else if (index > sections.length - 2) {
-        down.style.opacity = 0
-      } else {
-        up.style.opacity = 1
-        down.style.opacity = 1
-      }
-    }
-
-    const sectionForEachSmooth = index => {
-      toggleText(index, "show")
-      sections.forEach((section, i) => {
-        if (i === index) {
-          section.scrollIntoView({
-            behavior: "smooth"
-          })
-          displayArrow(index, sections)
-        }
-      })
-    }
-
-    const sectionForEachToggleText = condition =>
-      sections.forEach((section, i) => {
-        if (condition === true) {
-          if (i === index) {
-            section.querySelector(".text").classList.add("show")
-          }
-        } else {
-          if (i === index) {
-            section.querySelector(".text").classList.remove("show")
-          }
-        }
-      })
-
-    const toggleText = (i, state) => {
-      state === "show"
-        ? sectionForEachToggleText(true)
-        : sectionForEachToggleText(false)
-    }
-
-    // const handleKeyPress = e => {
-    //   console.log("Index di KEYPRESS", index)
-
-    //   switch (e.keyCode) {
-    //     case 38:
-    //       if (index < 1) return
-    //       toggleText(index, "hide")
-    //       index--
-    //       sectionForEachSmooth(index)
-    //       break
-    //     case 40:
-    //       if (index > 2) return
-    //       toggleText(index, "hide")
-    //       index++
-    //       sectionForEachSmooth(index)
-    //       break
-    //   }
-    // }
-
-    // const handleWheel = e => {
-    //   console.log("Index di WHEEL", index)
-
-    //   const delta = e.wheelDelta
-    //   const currentTime = Date.now()
-
-    //   if (currentTime - lastTime < animationDuration) {
-    //     e.preventDefault()
-    //     return
-    //   }
-
-    //   if (delta < 0) {
-    //     const nextBtnClick = new Event("click")
-    //     console.log("ini ada kaga si", nextBtnClick)
-
-    //     down.dispatchEvent(nextBtnClick)
-    //   } else {
-    //     const prevBtnClick = new Event("click")
-    //     up.dispatchEvent(prevBtnClick)
-    //   }
-    //   lastTime = currentTime
-    // }
-
-    // default state
-    toggleText(0, "show")
-    displayArrow(0, sections)
+    console.log("Tipe sections", this.state.sections)
 
     // Key press
-    // window.addEventListener("keydown", e => handleKeyPress(e))
+    document.addEventListener("keydown", e => this.handleKeyPress(e))
 
-    // Scroll Function
-    up.addEventListener("click", e => {
-      if (index < 1) return
-      toggleText(index, "hide")
-      index--
-      sectionForEachSmooth(index)
+    // Wheel
+    document.addEventListener("wheel", e => this.handleWheel(e))
+  }
+
+  displayArrow = (index, sections) => {
+    if (index < 1) {
+      this.state.up.style.opacity = 0
+    } else if (index > sections.length - 2) {
+      this.state.down.style.opacity = 0
+    } else {
+      this.state.up.style.opacity = 1
+      this.state.down.style.opacity = 1
+    }
+  }
+
+  sectionForEachSmooth = index => {
+    this.toggleText(index, "show")
+    this.state.sections.forEach((section, i) => {
+      if (i === index) {
+        section.scrollIntoView({
+          behavior: "smooth"
+        })
+        this.displayArrow(index, this.state.sections)
+      }
+    })
+  }
+
+  sectionForEachToggleText = condition =>
+    this.state.sections.forEach((section, i) => {
+      if (condition === true) {
+        if (i === this.state.index) {
+          section.querySelector(".text").classList.add("show")
+        }
+      } else {
+        if (i === this.state.index) {
+          section.querySelector(".text").classList.remove("show")
+        }
+      }
     })
 
-    down.addEventListener("click", e => {
-      if (index > 2) return
-      toggleText(index, "hide")
-      index++
-      sectionForEachSmooth(index)
-    })
+  toggleText = (i, state) => {
+    state === "show"
+      ? this.sectionForEachToggleText(true)
+      : this.sectionForEachToggleText(false)
+  }
+
+  handleKeyPress = e => {
+    switch (e.keyCode) {
+      case 38:
+        if (this.state.index < 1) return
+        this.toggleText(this.state.index, "hide")
+        this.setState({
+          index: this.state.index - 1
+        })
+        this.sectionForEachSmooth(this.state.index)
+        break
+      case 40:
+        if (this.state.index > 2) return
+        this.toggleText(this.state.index, "hide")
+        this.setState({
+          index: this.state.index + 1
+        })
+        this.sectionForEachSmooth(this.state.index)
+        break
+    }
+  }
+
+  handleWheel = e => {
+    const delta = e.wheelDelta
+    const currentTime = Date.now()
+
+    if (currentTime - this.state.lastTime < this.state.animationDuration) {
+      e.preventDefault()
+      return
+    }
+
+    if (delta < 0) {
+      const nextBtnClick = new Event("click")
+      this.state.down.dispatchEvent(nextBtnClick)
+    } else {
+      const prevBtnClick = new Event("click")
+      this.state.up.dispatchEvent(prevBtnClick)
+    }
+    this.state.lastTime = currentTime
   }
 
   onClick(e, judul) {
@@ -143,14 +130,6 @@ export default class Content extends Component {
         window.alert("Ngaco gayn")
     }
   }
-
-  // Wheel
-  // window.addEventListener("wheel", e => handleWheel(e))
-
-  // Loader function
-  // window.addEventListener("load", () => {
-  // })
-  // OnCLick
 
   render() {
     return (
