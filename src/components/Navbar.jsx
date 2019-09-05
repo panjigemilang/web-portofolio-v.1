@@ -1,53 +1,134 @@
 import React from "react"
-import { Link, animateScroll as scroll } from "react-scroll"
+import { Link } from "react-scroll"
+import Index from "./Context/IndexContext"
 
-export default function Navbar() {
-  const [navbarToggle, setNavbarToggle] = React.useState(true)
+export default class Navbar extends React.Component {
+  static contextType = Index
 
-  const toggleSlideMenu = () => {
-    setNavbarToggle(!navbarToggle)
+  state = {
+    navbarToggle: true
+  }
 
-    if (navbarToggle) {
-      openSLideMenu()
+  toggleSlideMenu = () => {
+    this.setState({
+      navbarToggle: !this.state.navbarToggle
+    })
+
+    if (this.state.navbarToggle) {
+      this.openSLideMenu()
     } else {
-      closeSlideMenu()
+      this.closeSlideMenu()
     }
   }
 
-  const scrollToTop = () => {
-    scroll.scrollToTop()
-  }
-
-  const openSLideMenu = () => {
+  openSLideMenu = () => {
     document.getElementById("side-menu").style.width = "250px"
-    document.querySelector("#side-menu > a").style.transition = "1s ease-in"
-    document.querySelector("#side-menu > a").style.animation = "5s ease-in"
-    document.querySelector("#side-menu > a").style.display = "block"
+    document.querySelector("#side-menu a").style.opacity = 1
   }
 
-  const closeSlideMenu = () => {
+  closeSlideMenu = () => {
     document.getElementById("side-menu").style.width = "0"
-    document.querySelector("#side-menu > a").style.transition = "0.5s ease-out"
-    document.querySelector("#side-menu > a").style.animation = "5s ease-out"
-    document.querySelector("#side-menu > a").style.display = "none"
+    document.querySelector("#side-menu a").style.opacity = 0
   }
 
-  return (
-    <React.Fragment>
-      <nav className="navbar navbar-expand-md navbar-dark bg-dark" id="nav-bg">
-        <Link
-          to="section1"
-          spy={true}
-          smooth={true}
-          offset={-70}
-          duration={500}
-          className="navbar-brand"
-        >
-          <img src={require("../img/devKami.png")} alt="logo.png" />
-        </Link>
+  onclick = index => {
+    this.context.setIndex(index)
+  }
 
-        <ul className="navbar-nav ml-auto">
-          <li className="nav-item">
+  onSideClick = index => {
+    this.toggleSlideMenu()
+    this.context.setIndex(index)
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <nav
+          className="navbar navbar-expand-md navbar-dark bg-dark"
+          id="nav-bg"
+        >
+          <Link
+            to="section1"
+            spy={true}
+            smooth={true}
+            duration={500}
+            className="navbar-brand"
+            onClick={() => this.onclick(0)}
+          >
+            <img src={require("../img/devKami.png")} alt="logo.png" />
+          </Link>
+
+          <ul className="navbar-nav ml-auto">
+            <li className="nav-item">
+              <Link
+                activeClass="active"
+                to="section1"
+                spy={true}
+                smooth={true}
+                duration={500}
+                className="nav-link"
+                onClick={() => this.onclick(0)}
+              >
+                <strong>Home</strong>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                to="section2"
+                spy={true}
+                smooth={true}
+                duration={500}
+                className="nav-link"
+                onClick={() => this.onclick(1)}
+              >
+                <strong>About</strong>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                to="section3"
+                spy={true}
+                smooth={true}
+                duration={500}
+                className="nav-link"
+                onClick={() => this.onclick(2)}
+              >
+                <strong>Portofolio</strong>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                to="section4"
+                spy={true}
+                smooth={true}
+                duration={500}
+                className="nav-link"
+                onClick={() => this.onclick(3)}
+              >
+                <strong>Contact</strong>
+              </Link>
+            </li>
+          </ul>
+
+          {/* INI TOMBOL COLLAPSE */}
+          <button
+            className="open-slide ml-auto"
+            type="button"
+            onClick={() => this.toggleSlideMenu()}
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
+
+          {/* INI SIDE MENU */}
+          <div id="side-menu" className="side-nav">
+            <button
+              type="button"
+              className="btn-close"
+              onClick={() => this.toggleSlideMenu()}
+            >
+              &times;
+            </button>
+
             <Link
               activeClass="active"
               to="section1"
@@ -55,111 +136,43 @@ export default function Navbar() {
               smooth={true}
               offset={-70}
               duration={500}
-              className="nav-link"
+              onClick={() => this.onSideClick(0)}
             >
               <strong>Home</strong>
             </Link>
-          </li>
-          <li className="nav-item">
             <Link
               to="section2"
               spy={true}
               smooth={true}
               offset={-70}
               duration={500}
-              className="nav-link"
+              onClick={() => this.onSideClick(1)}
             >
               <strong>About</strong>
             </Link>
-          </li>
-          <li className="nav-item">
             <Link
               to="section3"
               spy={true}
               smooth={true}
               offset={-70}
               duration={500}
-              className="nav-link"
+              onClick={() => this.onSideClick(2)}
             >
               <strong>Portofolio</strong>
             </Link>
-          </li>
-          <li className="nav-item">
             <Link
               to="section4"
               spy={true}
               smooth={true}
               offset={-70}
               duration={500}
-              className="nav-link"
+              onClick={() => this.toggleSlideMenu(3)}
             >
               <strong>Contact</strong>
             </Link>
-          </li>
-        </ul>
-
-        {/* INI TOMBOL COLLAPSE */}
-        <button
-          className="open-slide ml-auto"
-          type="button"
-          onClick={() => toggleSlideMenu()}
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
-
-        {/* INI SIDE MENU */}
-        <div id="side-menu" className="side-nav">
-          <button
-            type="button"
-            className="btn-close"
-            onClick={() => toggleSlideMenu()}
-          >
-            &times;
-          </button>
-
-          <Link
-            activeClass="active"
-            to="section1"
-            spy={true}
-            smooth={true}
-            offset={-70}
-            duration={500}
-            onClick={() => toggleSlideMenu()}
-          >
-            <strong>Home</strong>
-          </Link>
-          <Link
-            to="section2"
-            spy={true}
-            smooth={true}
-            offset={-70}
-            duration={500}
-            onClick={() => toggleSlideMenu()}
-          >
-            <strong>About</strong>
-          </Link>
-          <Link
-            to="section3"
-            spy={true}
-            smooth={true}
-            offset={-70}
-            duration={500}
-            onClick={() => toggleSlideMenu()}
-          >
-            <strong>Portofolio</strong>
-          </Link>
-          <Link
-            to="section4"
-            spy={true}
-            smooth={true}
-            offset={-70}
-            duration={500}
-            onClick={() => toggleSlideMenu()}
-          >
-            <strong>Contact</strong>
-          </Link>
-        </div>
-      </nav>
-    </React.Fragment>
-  )
+          </div>
+        </nav>
+      </React.Fragment>
+    )
+  }
 }

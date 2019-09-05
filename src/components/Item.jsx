@@ -3,8 +3,18 @@ import React from "react"
 export default function Item(props) {
   let [content, setContent] = React.useState("")
 
+  // import image
+  const devKami = require("../img/devKami.jpg")
+  const desa = require("../img/desacerdas.jpg")
+  const ptpnx = require("../img/ptpnxdj.jpg")
+  const presentasi = require("../img/presentasi1.jpg")
+  const presentasi2 = require("../img/ptpnx1.jpg")
+
   React.useEffect(() => {
-    console.log("ini ada kaga", props.match.params.post_judul)
+    if (document.getElementsByTagName("body")) {
+      document.getElementsByTagName("body")[0].style.overflow = "auto"
+    }
+
     switch (props.match.params.post_judul) {
       case "devkami":
         setContent(
@@ -13,7 +23,7 @@ export default function Item(props) {
               <div className="content container">
                 <br />
                 <h1 className="text-center font-weight-bolder">Dev Kami</h1>
-                <img src={require("../img/devKami.jpg")} alt="header.jpg" />
+                <img src={devKami} alt="header.jpg" />
                 <p>
                   &nbsp;&nbsp;This is my first website using React JS framework.
                   Dev Kami is a website to connects developer all around the
@@ -69,7 +79,7 @@ export default function Item(props) {
                 <h1 className="text-center font-weight-bolder">
                   Kampung Cerdas Bersahaja
                 </h1>
-                <img src={require("../img/desacerdas.jpg")} alt="header.jpg" />
+                <img src={desa} alt="header.jpg" />
                 <p>
                   &nbsp;&nbsp;On July 27, 2019 I created a team of 5 people to
                   build a software house that provides making a website and
@@ -117,7 +127,7 @@ export default function Item(props) {
                 <h1 className="text-center font-weight-bolder">
                   PTPN X Djoembang Baru
                 </h1>
-                <img src={require("../img/ptpnxdj.jpg")} alt="header.jpg" />
+                <img src={ptpnx} alt="header.jpg" />
                 <p>
                   &nbsp;&nbsp;I had been working at the PTPN X Djoembang Baru
                   company, Jombang, East Java for 3 months. I was assigned to
@@ -140,13 +150,13 @@ export default function Item(props) {
                   <div className="row">
                     <div className="col-lg-6 col-md-6">
                       <img
-                        src={require("../img/presentasi1.jpg")}
+                        src={presentasi}
                         alt="foto_presentasi.jpg"
                         style={{ objectPosition: "bottom" }}
                       />
                     </div>
                     <div className="col-lg-6 col-md-6">
-                      <img src={require("../img/ptpnx1.jpg")} alt="foto.jpg" />
+                      <img src={presentasi2} alt="foto.jpg" />
                     </div>
                   </div>
                 </p>
