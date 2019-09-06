@@ -11,6 +11,8 @@ export default function Item(props) {
   const presentasi2 = require("../img/ptpnx1.jpg")
 
   React.useEffect(() => {
+    window.removeEventListener("keypress", e => {})
+
     if (document.getElementsByTagName("body")) {
       document.getElementsByTagName("body")[0].style.overflow = "auto"
     }

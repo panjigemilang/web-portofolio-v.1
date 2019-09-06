@@ -3,24 +3,19 @@ import { Link } from "react-router-dom"
 import Index from "./Context/IndexContext"
 import { Animated } from "react-animated-css"
 
+var lastTime = 0
+
 export default class Content extends Component {
   static contextType = Index
 
   constructor() {
     super()
     this.state = {
-      judul: "",
-      index: 0
+      judul: ""
     }
   }
 
-  componentWillMount() {
-    console.log("ini Context WILL MOUNT", this.context.index)
-  }
-
   componentDidMount() {
-    console.log("ini Context DID MOUNT", this.context.index)
-
     // set Overflow Body
     if (document.getElementsByTagName("body")) {
       document.getElementsByTagName("body")[0].style.overflow = "hidden"
@@ -30,101 +25,197 @@ export default class Content extends Component {
     const up = document.querySelector("#up")
     const down = document.querySelector("#down")
 
-    let lastTime = 0
-    const animationDuration = 1000
+    // console.log("What is this sections", sections)
 
-    // Function for scroller
-    const sectionForEachSmooth = index => {
-      sections.forEach((section, i) => {
-        if (i === index) {
-          section.scrollIntoView({
-            behavior: "smooth"
-          })
-        }
-      })
-    }
+    // let lastTime = 0
+    // const animationDuration = 1000
 
-    const wheelHandler = e => {
-      const delta = e.deltaY
-      const currentTime = Date.now()
+    // // Function for scroller
+    // const sectionForEachSmooth = index => {
+    //   sections.forEach((section, i) => {
+    //     if (i === index) {
+    //       section.scrollIntoView({
+    //         behavior: "smooth"
+    //       })
+    //     }
+    //   })
+    // }
 
-      if (currentTime - lastTime < animationDuration) {
-        e.preventDefault()
-        return
-      }
+    // const wheelHandler = e => {
+    //   const delta = e.deltaY
+    //   const currentTime = Date.now()
 
-      if (delta > 0) {
-        const nextBtnClick = new Event("click")
-        down.dispatchEvent(nextBtnClick)
-      } else {
-        const prevBtnClick = new Event("click")
-        up.dispatchEvent(prevBtnClick)
-      }
+    //   if (currentTime - lastTime < animationDuration) {
+    //     e.preventDefault()
+    //     return
+    //   }
 
-      lastTime = currentTime
-    }
+    //   if (delta > 0) {
+    //     const nextBtnClick = new Event("click")
+    //     down.dispatchEvent(nextBtnClick)
+    //   } else {
+    //     const prevBtnClick = new Event("click")
+    //     up.dispatchEvent(prevBtnClick)
+    //   }
 
-    const upHandler = () => {
-      // this.setState({
-      //   index: this.state.index - 1
-      // })
-      this.context.setIndex(this.context.index - 1)
-      sectionForEachSmooth(this.context.index)
-    }
+    //   lastTime = currentTime
+    // }
 
-    const downHandler = () => {
-      // this.setState({
-      //   index: this.state.index - 1
-      // })
-      this.context.setIndex(this.context.index + 1)
-      sectionForEachSmooth(this.context.index)
-    }
+    // const upHandler = () => {
+    //   this.context.setIndex(this.context.index - 1)
+    //   sectionForEachSmooth(this.context.index)
+    // }
 
-    const handleKeyPress = e => {
-      switch (e.keyCode) {
-        case 38:
-          // if (this.state.index < 1) return
-          if (this.context.index < 1) return
-          upHandler()
-          break
-        case 40:
-          // if (this.state.index > 2) return
-          if (this.context.index > 2) return
-          downHandler()
-          break
-      }
-    }
+    // const downHandler = () => {
+    //   this.context.setIndex(this.context.index + 1)
+    //   sectionForEachSmooth(this.context.index)
+    // }
+
+    // const handleKeyPress = e => {
+    //   console.log("Context KEYPRESS", this.context.index)
+
+    //   const currentTime = Date.now()
+
+    //   switch (e.keyCode) {
+    //     case 38:
+    //       if (currentTime - lastTime < animationDuration) {
+    //         e.preventDefault()
+    //         return
+    //       }
+    //       if (this.context.index < 1) return
+    //       upHandler()
+    //       lastTime = currentTime
+    //       break
+    //     case 40:
+    //       if (currentTime - lastTime < animationDuration) {
+    //         e.preventDefault()
+    //         return
+    //       }
+    //       if (this.context.index > 2) return
+    //       downHandler()
+    //       lastTime = currentTime
+    //       break
+    //   }
+    // }
 
     // Scroll Function
     up.addEventListener("click", e => {
-      if (this.context.index < 1) return
-      // this.setState({
-      //   index: this.state.index - 1
-      // })
-      this.context.setIndex(this.context.index - 1)
-      sectionForEachSmooth(this.context.index)
+      if (e.isTrusted) {
+        this.context.setIndex(this.context.index - 1)
+        this.sectionForEachSmooth(sections, this.context.index)
+      } else {
+        this.context.setIndex(this.context.index - 1)
+        window.setTimeout(() => {
+          this.sectionForEachSmooth(sections, this.context.index)
+        }, 100)
+      }
     })
 
     down.addEventListener("click", e => {
       if (this.context.index > 2) return
-      // this.setState({
-      //   index: this.state.index + 1
-      // })
-      this.context.setIndex(this.context.index + 1)
-      sectionForEachSmooth(this.context.index)
+      if (e.isTrusted) {
+        this.context.setIndex(this.context.index + 1)
+        this.sectionForEachSmooth(sections, this.context.index)
+      } else {
+        this.context.setIndex(this.context.index + 1)
+        window.setTimeout(() => {
+          this.sectionForEachSmooth(sections, this.context.index)
+        }, 100)
+      }
     })
 
-    // Wheel Event
-    window.addEventListener("wheel", e => {
-      wheelHandler(e)
-    })
+    // // Wheel Event
+    // window.addEventListener("wheel", e => {
+    //   this.wheelHandler(e, lastTime, animationDuration, up, down)
+    // })
 
-    // Key press
-    window.addEventListener("keydown", e => handleKeyPress(e))
+    // // Key press
+    // window.addEventListener("keydown", e => {
+    //   this.handleKeyPress(e, lastTime, animationDuration, sections)
+    // })
+  }
+
+  sectionForEachSmooth = (sections, index) => {
+    sections.forEach((section, i) => {
+      if (i === index) {
+        console.log("ini I", i)
+        console.log("ini INDEX", index)
+
+        section.scrollIntoView({
+          behavior: "smooth"
+        })
+      }
+    })
+  }
+
+  wheelHandler = e => {
+    const currentTime = Date.now()
+    const up = document.querySelector("#up")
+    const down = document.querySelector("#down")
+    const animationDuration = 1000
+
+    if (currentTime - lastTime < animationDuration) {
+      e.preventDefault()
+      return
+    }
+
+    if (e.deltaY > 0) {
+      const nextBtnClick = new Event("click")
+      down.dispatchEvent(nextBtnClick)
+    } else {
+      const prevBtnClick = new Event("click")
+      up.dispatchEvent(prevBtnClick)
+    }
+
+    lastTime = currentTime
+  }
+
+  upHandler = sections => {
+    if (this.context.index < 1) return
+    this.context.setIndex(this.context.index - 1)
+    window.setTimeout(() => {
+      this.sectionForEachSmooth(sections, this.context.index)
+    }, 100)
+  }
+
+  downHandler = sections => {
+    if (this.context.index > 2) return
+    this.context.setIndex(this.context.index + 1)
+    window.setTimeout(() => {
+      this.sectionForEachSmooth(sections, this.context.index)
+    }, 100)
+  }
+
+  handleKeyPress = e => {
+    const currentTime = Date.now()
+    const animationDuration = 1000
+    const sections = document.querySelectorAll("section")
+
+    switch (e.keyCode) {
+      case 38:
+        if (currentTime - lastTime < animationDuration) {
+          e.preventDefault()
+          return
+        }
+        if (this.context.index < 1) return
+        this.upHandler(sections)
+        lastTime = currentTime
+        break
+      case 40:
+        if (currentTime - lastTime < animationDuration) {
+          e.preventDefault()
+          return
+        }
+        if (this.context.index > 2) return
+        this.downHandler(sections)
+        lastTime = currentTime
+        break
+    }
   }
 
   componentDidUpdate() {
     console.log("Context DID Update", this.context.index)
+
     if (this.context.index < 1) {
       this.refs.up.style.opacity = 0
       this.refs.down.style.opacity = 1
@@ -137,162 +228,30 @@ export default class Content extends Component {
     }
   }
 
-  componentWillUnmount() {
-    window.removeEventListener("wheel", e => null)
-    window.removeEventListener("keypress", e => null)
-  }
-
   render() {
-    const SectionOne = index => {
-      return (
-        <Animated
-          animationInDelay={500}
-          animationOutDelay={4000}
-          isVisible={index == 0 ? false : true}
-        >
-          <div className="text">
-            <h1 className="font-weight-bold display-4">Welcome.</h1>
-            <h3>To a web developer website</h3>
-          </div>
-        </Animated>
-      )
-    }
-
-    const SectionTwoImage = index => {
-      return (
-        <Animated
-          animationInDelay={500}
-          animationOutDelay={4000}
-          isVisible={index == 1 ? false : true}
-        >
-          <div className="img-box">
-            <img src={require("../img/IMG_5415.jpg")} alt="foto.jpg" />
-            <div className="text-content-container">
-              <div className="text-content">
-                <h2>Hover Me!</h2>
-                <h1>Panji Gemilang</h1>
-                <p>
-                  Web Developer.
-                  <br />
-                  <span style={{ color: " aqua" }}> ReactJS </span>
-                  &nbsp;
-                  <span style={{ color: " #96c996" }}>Node JS</span>
-                  &nbsp; Expressjs &nbsp;
-                  <span style={{ color: " #69db69" }}>MongoDB</span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </Animated>
-      )
-    }
-
-    const SectionTwoDesc = index => {
-      return (
-        <Animated
-          animationIn="zoomIn"
-          animationOut="zoomOut"
-          animationInDelay={500}
-          animationOutDelay={4000}
-          isVisible={index !== 1 ? true : false}
-        >
-          <div className="desc-container">
-            <h3 className="text-justify">
-              &nbsp;&nbsp;Hello! my name is Panji Gemilang. I’m an Informatics
-              Engineer at Brawijaya University semester 7th. I was born in
-              Malang, December 3rd, 1998. I’m motivated about web development
-              and android apps. I have great communication and great time
-              management skill. You could say that I’m a religious person and
-              it’s really helped me to control myself. <br />
-              <br /> &nbsp; &nbsp;My current GPA is : 3.72
-            </h3>
-          </div>
-        </Animated>
-      )
-    }
-
-    const SectionThreeDev = index => {
-      return (
-        <Animated
-          animationInDelay={500}
-          animationOutDelay={4000}
-          isVisible={index == 2 ? false : true}
-        >
-          <div className="card-custom">
-            <img
-              src={require("../img/devKami.jpg")}
-              alt="foto.jpg"
-              width="50px"
-              heigth="20px"
-            />
-            <Link to="/post/devkami" role="button">
-              <div className="overlay">
-                <span className="overlay-content">Developer Kami</span>
-              </div>
-            </Link>
-          </div>
-        </Animated>
-      )
-    }
-
-    const SectionThreeDesa = index => {
-      return (
-        <Animated
-          animationInDelay={700}
-          animationOutDelay={4000}
-          isVisible={index == 2 ? false : true}
-        >
-          <div className="card-custom">
-            <img
-              src={require("../img/desacerdas.jpg")}
-              alt="foto.jpg"
-              width="50px"
-              heigth="20px"
-            />
-            <Link to="/post/desa-cerdas-bersahaja" role="button">
-              <div className="overlay">
-                <span className="overlay-content">Desa Cerdas Bersahaja</span>
-              </div>
-            </Link>
-          </div>
-        </Animated>
-      )
-    }
-
-    const SectionThreePtpnx = index => {
-      return (
-        <Animated
-          animationInDelay={700}
-          animationOutDelay={4000}
-          isVisible={index == 2 ? false : true}
-        >
-          <div className="card-custom">
-            <img
-              src={require("../img/ptpnxdj.jpg")}
-              alt="foto.jpg"
-              width="50px"
-              heigth="20px"
-            />
-            <Link to="/post/ptpnx-djoembang" role="button">
-              <div className="overlay">
-                <span className="overlay-content">PTPN X Djoembang</span>
-              </div>
-            </Link>
-          </div>
-        </Animated>
-      )
-    }
-
     return (
-      <React.Fragment>
-        <i className="fas fa-arrow-down" id="down" ref="down"></i>
+      <main
+        onWheel={e => this.wheelHandler(e)}
+        onKeyDown={e => this.handleKeyPress(e)}
+        tabIndex={0}
+      >
         <i className="fas fa-arrow-up" id="up" ref="up"></i>
+        <i className="fas fa-arrow-down" id="down" ref="down"></i>
         <div className="wrapper-section">
           <section id="section1">
             <div className="gunung1"></div>
             <div className="gunung2"></div>
             <div className="awan"></div>
-            <SectionOne index={this.context.index}></SectionOne>
+            <Animated
+              isVisible={this.context.index !== 0 ? false : true}
+              animationInDelay={500}
+              animationOutDelay={500}
+            >
+              <div className="text">
+                <h1 className="font-weight-bold display-4">Welcome.</h1>
+                <h3>To a web developer website</h3>
+              </div>
+            </Animated>
           </section>
           <section id="section2">
             <div className="text">
@@ -303,10 +262,55 @@ export default class Content extends Component {
 
               <div className="row">
                 <div className="col-lg-6 col-md-12">
-                  <SectionTwoImage index={this.context.index}></SectionTwoImage>
+                  <Animated
+                    animationIn="bounceInUp"
+                    animationOutDelay={500}
+                    animationInDelay={500}
+                    isVisible={this.context.index !== 1 ? false : true}
+                  >
+                    <div className="img-box">
+                      <img
+                        src={require("../img/IMG_5415.jpg")}
+                        alt="foto.jpg"
+                      />
+                      <div className="text-content-container">
+                        <div className="text-content">
+                          <h2>Hover Me!</h2>
+                          <h1>Panji Gemilang</h1>
+                          <p>
+                            Web Developer.
+                            <br />
+                            <span style={{ color: " aqua" }}> ReactJS </span>
+                            &nbsp;
+                            <span style={{ color: " #96c996" }}>Node JS</span>
+                            &nbsp; Expressjs &nbsp;
+                            <span style={{ color: " #69db69" }}>MongoDB</span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </Animated>
                 </div>
                 <div className="col-lg-6 col-md-12">
-                  <SectionTwoDesc index={this.context.index}></SectionTwoDesc>
+                  <Animated
+                    animationIn="bounceInRight"
+                    animationOutDelay={500}
+                    animationInDelay={800}
+                    isVisible={this.context.index !== 1 ? false : true}
+                  >
+                    <div className="desc-container">
+                      <h3 className="text-justify">
+                        &nbsp;&nbsp;Hello! my name is Panji Gemilang. I’m an
+                        Informatics Engineer at Brawijaya University semester
+                        7th. I was born in Malang, December 3rd, 1998. I’m
+                        motivated about web development and android apps. I have
+                        great communication and great time management skill. You
+                        could say that I’m a religious person and it’s really
+                        helped me to control myself. <br />
+                        <br /> &nbsp; &nbsp;My current GPA is : 3.72
+                      </h3>
+                    </div>
+                  </Animated>
                 </div>
               </div>
             </div>
@@ -323,17 +327,75 @@ export default class Content extends Component {
               </div>
               <div className="row">
                 <div className="col-lg-4 col-md-6 col-sm-12">
-                  <SectionThreeDev index={this.context.index}></SectionThreeDev>
+                  <Animated
+                    animationIn="fadeInDownBig"
+                    animationOutDelay={500}
+                    isVisible={this.context.index !== 2 ? false : true}
+                  >
+                    <div className="card-custom">
+                      <img
+                        src={require("../img/devKami.jpg")}
+                        alt="foto.jpg"
+                        width="50px"
+                        heigth="20px"
+                      />
+                      <Link to="/post/devkami" role="button">
+                        <div className="overlay">
+                          <span className="overlay-content">
+                            Developer Kami
+                          </span>
+                        </div>
+                      </Link>
+                    </div>
+                  </Animated>
                 </div>
                 <div className="col-lg-4 col-md-6 col-sm-12">
-                  <SectionThreeDesa
-                    index={this.context.index}
-                  ></SectionThreeDesa>
+                  <Animated
+                    animationIn="fadeInDownBig"
+                    animationInDelay={300}
+                    animationOutDelay={500}
+                    isVisible={this.context.index !== 2 ? false : true}
+                  >
+                    <div className="card-custom">
+                      <img
+                        src={require("../img/desacerdas.jpg")}
+                        alt="foto.jpg"
+                        width="50px"
+                        heigth="20px"
+                      />
+                      <a href="/post/desa-cerdas-bersahaja" role="button">
+                        <div className="overlay">
+                          <span className="overlay-content">
+                            Desa Cerdas Bersahaja
+                          </span>
+                        </div>
+                      </a>
+                    </div>
+                  </Animated>
                 </div>
                 <div className="col-lg-4 col-md-6 col-sm-12">
-                  <SectionThreePtpnx
-                    index={this.context.index}
-                  ></SectionThreePtpnx>
+                  <Animated
+                    animationIn="fadeInDownBig"
+                    animationInDelay={600}
+                    animationOutDelay={500}
+                    isVisible={this.context.index !== 2 ? false : true}
+                  >
+                    <div className="card-custom">
+                      <img
+                        src={require("../img/ptpnxdj.jpg")}
+                        alt="foto.jpg"
+                        width="50px"
+                        heigth="20px"
+                      />
+                      <Link to="/post/ptpnx-djoembang" role="button">
+                        <div className="overlay">
+                          <span className="overlay-content">
+                            PTPN X Djoembang
+                          </span>
+                        </div>
+                      </Link>
+                    </div>
+                  </Animated>
                 </div>
               </div>
             </div>
@@ -370,7 +432,7 @@ export default class Content extends Component {
             </div>
           </section>
         </div>
-      </React.Fragment>
+      </main>
     )
   }
 }

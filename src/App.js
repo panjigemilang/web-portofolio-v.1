@@ -17,6 +17,10 @@ export default class App extends React.Component {
     })
   }
 
+  componentDidMount() {
+    console.log("Context DID MOUNT == APP JS", this.state.index)
+  }
+
   render() {
     return (
       <IndexContext.Provider
