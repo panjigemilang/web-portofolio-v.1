@@ -4,6 +4,7 @@ body,
 .main {
   overflow: hidden;
   font-family: "PT Sans", sans-serif;
+  font-size: 100%;
 }
 
 /* NAVBAR: style */
@@ -558,10 +559,6 @@ section:nth-child(4) #copyright {
     padding: 10vh 4vh;
   }
 
-  section:nth-child(2) .text h3 {
-    font-size: 2em;
-  }
-
   section:nth-child(2) .img-box {
     width: 50%;
     height: 50%;
@@ -583,12 +580,12 @@ section:nth-child(4) #copyright {
   }
 
   section:nth-child(2) .text-content-container h1 {
-    font-size: 1.5em;
+    font-size: 110%;
   }
 
   section:nth-child(2) .text-content-container p {
     /* box-sizing: unset; */
-    font-size: 1.2em;
+    font-size: 70%;
   }
 
   section:nth-child(2) .desc-container h3 {
@@ -597,7 +594,7 @@ section:nth-child(4) #copyright {
 
   /* Hover */
   .img-box:hover .text-content {
-    padding: 15% 28px;
+    padding: 15% 0;
   }
 
   /* sECTION: Section three */
