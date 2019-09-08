@@ -25,81 +25,9 @@ export default class Content extends Component {
     const up = document.querySelector("#up")
     const down = document.querySelector("#down")
 
-    // console.log("What is this sections", sections)
-
-    // let lastTime = 0
-    // const animationDuration = 1000
-
-    // // Function for scroller
-    // const sectionForEachSmooth = index => {
-    //   sections.forEach((section, i) => {
-    //     if (i === index) {
-    //       section.scrollIntoView({
-    //         behavior: "smooth"
-    //       })
-    //     }
-    //   })
-    // }
-
-    // const wheelHandler = e => {
-    //   const delta = e.deltaY
-    //   const currentTime = Date.now()
-
-    //   if (currentTime - lastTime < animationDuration) {
-    //     e.preventDefault()
-    //     return
-    //   }
-
-    //   if (delta > 0) {
-    //     const nextBtnClick = new Event("click")
-    //     down.dispatchEvent(nextBtnClick)
-    //   } else {
-    //     const prevBtnClick = new Event("click")
-    //     up.dispatchEvent(prevBtnClick)
-    //   }
-
-    //   lastTime = currentTime
-    // }
-
-    // const upHandler = () => {
-    //   this.context.setIndex(this.context.index - 1)
-    //   sectionForEachSmooth(this.context.index)
-    // }
-
-    // const downHandler = () => {
-    //   this.context.setIndex(this.context.index + 1)
-    //   sectionForEachSmooth(this.context.index)
-    // }
-
-    // const handleKeyPress = e => {
-    //   console.log("Context KEYPRESS", this.context.index)
-
-    //   const currentTime = Date.now()
-
-    //   switch (e.keyCode) {
-    //     case 38:
-    //       if (currentTime - lastTime < animationDuration) {
-    //         e.preventDefault()
-    //         return
-    //       }
-    //       if (this.context.index < 1) return
-    //       upHandler()
-    //       lastTime = currentTime
-    //       break
-    //     case 40:
-    //       if (currentTime - lastTime < animationDuration) {
-    //         e.preventDefault()
-    //         return
-    //       }
-    //       if (this.context.index > 2) return
-    //       downHandler()
-    //       lastTime = currentTime
-    //       break
-    //   }
-    // }
-
     // Scroll Function
     up.addEventListener("click", e => {
+      if (this.context.index < 1) return
       if (e.isTrusted) {
         this.context.setIndex(this.context.index - 1)
         this.sectionForEachSmooth(sections, this.context.index)
@@ -107,7 +35,7 @@ export default class Content extends Component {
         this.context.setIndex(this.context.index - 1)
         window.setTimeout(() => {
           this.sectionForEachSmooth(sections, this.context.index)
-        }, 100)
+        }, 10)
       }
     })
 
@@ -120,26 +48,15 @@ export default class Content extends Component {
         this.context.setIndex(this.context.index + 1)
         window.setTimeout(() => {
           this.sectionForEachSmooth(sections, this.context.index)
-        }, 100)
+        }, 10)
       }
     })
-
-    // // Wheel Event
-    // window.addEventListener("wheel", e => {
-    //   this.wheelHandler(e, lastTime, animationDuration, up, down)
-    // })
-
-    // // Key press
-    // window.addEventListener("keydown", e => {
-    //   this.handleKeyPress(e, lastTime, animationDuration, sections)
-    // })
   }
 
   sectionForEachSmooth = (sections, index) => {
     sections.forEach((section, i) => {
       if (i === index) {
-        console.log("ini I", i)
-        console.log("ini INDEX", index)
+        console.log("INI SECTION NJING", section)
 
         section.scrollIntoView({
           behavior: "smooth"
@@ -175,7 +92,7 @@ export default class Content extends Component {
     this.context.setIndex(this.context.index - 1)
     window.setTimeout(() => {
       this.sectionForEachSmooth(sections, this.context.index)
-    }, 100)
+    }, 10)
   }
 
   downHandler = sections => {
@@ -183,7 +100,7 @@ export default class Content extends Component {
     this.context.setIndex(this.context.index + 1)
     window.setTimeout(() => {
       this.sectionForEachSmooth(sections, this.context.index)
-    }, 100)
+    }, 10)
   }
 
   handleKeyPress = e => {
@@ -214,8 +131,7 @@ export default class Content extends Component {
   }
 
   componentDidUpdate() {
-    console.log("Context DID Update", this.context.index)
-
+    // Arrow Showing
     if (this.context.index < 1) {
       this.refs.up.style.opacity = 0
       this.refs.down.style.opacity = 1
@@ -228,12 +144,18 @@ export default class Content extends Component {
     }
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("scroll", e => {}, true)
+  }
+
   render() {
     return (
-      <main
+      <div
         onWheel={e => this.wheelHandler(e)}
         onKeyDown={e => this.handleKeyPress(e)}
         tabIndex={0}
+        ref="scroll"
+        className="main"
       >
         <i className="fas fa-arrow-up" id="up" ref="up"></i>
         <i className="fas fa-arrow-down" id="down" ref="down"></i>
@@ -244,6 +166,7 @@ export default class Content extends Component {
             <div className="awan"></div>
             <Animated
               isVisible={this.context.index !== 0 ? false : true}
+              animationIn="fadeIn"
               animationInDelay={500}
               animationOutDelay={500}
             >
@@ -259,11 +182,10 @@ export default class Content extends Component {
                 <h3 className="display-4 mr-auto ml-auto">About Me</h3>
               </div>
               <br />
-
               <div className="row">
                 <div className="col-lg-6 col-md-12">
                   <Animated
-                    animationIn="bounceInUp"
+                    animationIn="bounceInLeft"
                     animationOutDelay={500}
                     animationInDelay={500}
                     isVisible={this.context.index !== 1 ? false : true}
@@ -275,7 +197,6 @@ export default class Content extends Component {
                       />
                       <div className="text-content-container">
                         <div className="text-content">
-                          <h2>Hover Me!</h2>
                           <h1>Panji Gemilang</h1>
                           <p>
                             Web Developer.
@@ -326,7 +247,7 @@ export default class Content extends Component {
                 </div>
               </div>
               <div className="row">
-                <div className="col-lg-4 col-md-6 col-sm-12">
+                <div className="col-lg-4 col-md-6 col-sm-6 col-6">
                   <Animated
                     animationIn="fadeInDownBig"
                     animationOutDelay={500}
@@ -349,7 +270,7 @@ export default class Content extends Component {
                     </div>
                   </Animated>
                 </div>
-                <div className="col-lg-4 col-md-6 col-sm-12">
+                <div className="col-lg-4 col-md-6 col-sm-6 col-6">
                   <Animated
                     animationIn="fadeInDownBig"
                     animationInDelay={300}
@@ -363,17 +284,15 @@ export default class Content extends Component {
                         width="50px"
                         heigth="20px"
                       />
-                      <a href="/post/desa-cerdas-bersahaja" role="button">
+                      <Link to="/post/desa-cerdas-bersahaja" role="button">
                         <div className="overlay">
-                          <span className="overlay-content">
-                            Desa Cerdas Bersahaja
-                          </span>
+                          <span className="overlay-content">Desa Cerdas</span>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </Animated>
                 </div>
-                <div className="col-lg-4 col-md-6 col-sm-12">
+                <div className="col-lg-4 col-md-6 col-sm-6 col-6">
                   <Animated
                     animationIn="fadeInDownBig"
                     animationInDelay={600}
@@ -389,9 +308,7 @@ export default class Content extends Component {
                       />
                       <Link to="/post/ptpnx-djoembang" role="button">
                         <div className="overlay">
-                          <span className="overlay-content">
-                            PTPN X Djoembang
-                          </span>
+                          <span className="overlay-content">PTPN X</span>
                         </div>
                       </Link>
                     </div>
@@ -405,25 +322,46 @@ export default class Content extends Component {
               <h1>Contact Me</h1>
               <ul style={{ listStyle: "none" }}>
                 <li>
-                  <span className="fas fa-envelope"></span>
-                  &nbsp;panjigemilang31298@gmail.com
-                </li>
-                <li>
-                  <span className="fas fa-phone"></span>
-                  &nbsp;+628980789580
-                </li>
-                <li>
-                  <span className="fab fa-linkedin-in"></span>
-                  &nbsp;
-                  <a
-                    href="https://linkedin.com/in/panji-g"
-                    role="button"
-                    style={{ color: "inherit" }}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Animated
+                    animationIn="bounceInLeft"
+                    animationInDelay={500}
+                    animationOutDelay={500}
+                    isVisible={this.context.index !== 3 ? false : true}
                   >
-                    Panji Gemilang
-                  </a>
+                    <span className="fas fa-envelope"></span>
+                    &nbsp;panjigemilang31298@gmail.com
+                  </Animated>
+                </li>
+                <li>
+                  <Animated
+                    animationIn="bounceInLeft"
+                    animationInDelay={800}
+                    animationOutDelay={500}
+                    isVisible={this.context.index !== 3 ? false : true}
+                  >
+                    <span className="fas fa-phone"></span>
+                    &nbsp;+628980789580
+                  </Animated>
+                </li>
+                <li>
+                  <Animated
+                    animationIn="bounceInLeft"
+                    animationInDelay={1000}
+                    animationOutDelay={500}
+                    isVisible={this.context.index !== 3 ? false : true}
+                  >
+                    <span className="fab fa-linkedin-in"></span>
+                    &nbsp;
+                    <a
+                      href="https://linkedin.com/in/panji-g"
+                      role="button"
+                      style={{ color: "inherit" }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Panji Gemilang
+                    </a>
+                  </Animated>
                 </li>
               </ul>
               <footer>
@@ -432,7 +370,7 @@ export default class Content extends Component {
             </div>
           </section>
         </div>
-      </main>
+      </div>
     )
   }
 }

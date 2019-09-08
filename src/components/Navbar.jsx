@@ -134,7 +134,6 @@ export default class Navbar extends React.Component {
               to="section1"
               spy={true}
               smooth={true}
-              offset={-70}
               duration={500}
               onClick={() => this.onSideClick(0)}
             >
@@ -144,7 +143,6 @@ export default class Navbar extends React.Component {
               to="section2"
               spy={true}
               smooth={true}
-              offset={-70}
               duration={500}
               onClick={() => this.onSideClick(1)}
             >
@@ -154,7 +152,6 @@ export default class Navbar extends React.Component {
               to="section3"
               spy={true}
               smooth={true}
-              offset={-70}
               duration={500}
               onClick={() => this.onSideClick(2)}
             >
@@ -164,7 +161,6 @@ export default class Navbar extends React.Component {
               to="section4"
               spy={true}
               smooth={true}
-              offset={-70}
               duration={500}
               onClick={() => this.toggleSlideMenu(3)}
             >
