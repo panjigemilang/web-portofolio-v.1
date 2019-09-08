@@ -102,12 +102,12 @@ export default function Item(props) {
                   <span>(currently under maintenance) :</span>
                 </p>
                 <a
-                  href="https://desacerdasbersahaja.herokuapp.com"
+                  href="https://desacerdasbersahaja.netlify.com"
                   role="button"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <p>https://desacerdasbersahaja.herokuapp.com/</p>
+                  <p>https://desacerdasbersahaja.netlify.com/</p>
                 </a>
                 <br />
                 <br />
