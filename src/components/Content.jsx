@@ -3,7 +3,8 @@ import { Link } from "react-router-dom"
 import Index from "./Context/IndexContext"
 import { Animated } from "react-animated-css"
 
-var lastTime = 0
+var lastTime = 0,
+  touchStart = 0
 
 export default class Content extends Component {
   static contextType = Index
@@ -11,7 +12,35 @@ export default class Content extends Component {
   constructor() {
     super()
     this.state = {
-      judul: ""
+      judul: "",
+      IDContent: {
+        S1_Title: "Selamat Datang",
+        S1_Desc: "di website Panji Gemilang",
+        S1_Desc2: "Pengembang aplikasi website",
+        S2_Title: "Tentang Saya",
+        S2_Desc:
+          "Halo! Nama saya Panji Gemilang. Saya seorang mahasiswa teknik Informatika Universitas Brawijaya semester 7. Saya lahir di Malang, 03 Desember, 1998.",
+        S2_Desc2:
+          "Saya sangat termotivasi tentang pengembangan website dan aplikasi android serta mengikuti perkembangan teknologi. Saya memiliki pengalaman bekerja dalam tim dan menjadi projek manajer untuk memimpin sebuah projek website dan aplikasi android. Saya termasuk orang yang religius dan hal ini sangat membantu saya untuk mengontrol diri saya.",
+        S2_GPA: "IPK saya saat ini : 3.72",
+        S4_Title: "Hubungi Saya",
+        S4_Desc: "Lihat CV saya disini!",
+        S4_Link: "https://www.docdroid.net/Z46c4JZ/cv-september-id-2019.pdf"
+      },
+      ENContent: {
+        S1_Title: "Welcome",
+        S1_Desc: "To the Panji Gemilang website",
+        S1_Desc2: "Website developer",
+        S2_Title: "About Me",
+        S2_Desc:
+          "Hello! my name is Panji Gemilang. I’m an Informatics Engineer at Brawijaya University semester 7th. I was born in Malang, December 3rd, 1998.",
+        S2_Desc2:
+          "I’m motivated about web development and android apps. I have great communication and great time management skill. I have experiences working on a team and lead a project about website and android apps. You can say that I’m a religious person and it’s really helped me to control myself.",
+        S2_GPA: "My current GPA is : 3.72",
+        S4_Title: "Contact Me",
+        S4_Desc: "Look at my CV here!",
+        S4_Link: "https://www.docdroid.net/SXYqpwX/cv-september.pdf"
+      }
     }
   }
 
@@ -51,13 +80,18 @@ export default class Content extends Component {
         }, 10)
       }
     })
+
+    // First init
+    window.setTimeout(() => {
+      this.sectionForEachSmooth(sections, this.context.index)
+    }, 10)
+
+    console.log("Didmount", this.context.index)
   }
 
   sectionForEachSmooth = (sections, index) => {
     sections.forEach((section, i) => {
       if (i === index) {
-        console.log("INI SECTION NJING", section)
-
         section.scrollIntoView({
           behavior: "smooth"
         })
@@ -130,6 +164,34 @@ export default class Content extends Component {
     }
   }
 
+  handleTouchStart(e) {
+    touchStart = e.touches[0].clientY
+  }
+
+  handleToucheEnd(e) {
+    const currentTime = Date.now()
+    const animationDuration = 1000
+    const sections = document.querySelectorAll("section")
+
+    if (touchStart - e.touches[0].clientY > 110) {
+      // Down
+      if (currentTime - lastTime < animationDuration) {
+        e.preventDefault()
+        return
+      }
+      this.downHandler(sections)
+      lastTime = currentTime
+    } else if (touchStart - e.touches[0].clientY < -110) {
+      // Up
+      if (currentTime - lastTime < animationDuration) {
+        e.preventDefault()
+        return
+      }
+      this.upHandler(sections)
+      lastTime = currentTime
+    }
+  }
+
   componentDidUpdate() {
     // Arrow Showing
     if (this.context.index < 1) {
@@ -144,15 +206,15 @@ export default class Content extends Component {
     }
   }
 
-  componentWillUnmount() {
-    window.removeEventListener("scroll", e => {}, true)
-  }
-
   render() {
+    const { IDContent, ENContent } = this.state
+
     return (
       <div
         onWheel={e => this.wheelHandler(e)}
         onKeyDown={e => this.handleKeyPress(e)}
+        onTouchStart={e => this.handleTouchStart(e)}
+        onTouchMove={e => this.handleToucheEnd(e)}
         tabIndex={0}
         ref="scroll"
         className="main"
@@ -171,19 +233,36 @@ export default class Content extends Component {
               animationOutDelay={500}
             >
               <div className="text">
-                <h1 className="font-weight-bold display-4">Welcome.</h1>
-                <h3>To a web developer website</h3>
+                <h1 className="font-weight-bolder display-4">
+                  {this.context.toggleLang
+                    ? ENContent.S1_Title
+                    : IDContent.S1_Title}
+                </h1>
+                <h3>
+                  {this.context.toggleLang
+                    ? ENContent.S1_Desc
+                    : IDContent.S1_Desc}
+                </h3>
+                <h4>
+                  {this.context.toggleLang
+                    ? ENContent.S1_Desc2
+                    : IDContent.S1_Desc2}
+                </h4>
               </div>
             </Animated>
           </section>
           <section id="section2">
             <div className="text">
               <div className="text-center row">
-                <h3 className="display-4 mr-auto ml-auto">About Me</h3>
+                <h3 className="display-4 mr-auto ml-auto font-weight-bolder">
+                  {this.context.toggleLang
+                    ? ENContent.S2_Title
+                    : IDContent.S2_Title}
+                </h3>
               </div>
               <br />
-              <div className="row">
-                <div className="col-lg-6 col-md-12">
+              <div className="row d-md-block wrapper-about">
+                <div className="col-6 col-md-6 float-left">
                   <Animated
                     animationIn="bounceInLeft"
                     animationOutDelay={500}
@@ -191,10 +270,7 @@ export default class Content extends Component {
                     isVisible={this.context.index !== 1 ? false : true}
                   >
                     <div className="img-box">
-                      <img
-                        src={require("../img/IMG_5415.jpg")}
-                        alt="foto.jpg"
-                      />
+                      <img src="/pp1.jpg" alt="foto.jpg" />
                       <div className="text-content-container">
                         <div className="text-content">
                           <h1>Panji Gemilang</h1>
@@ -212,7 +288,7 @@ export default class Content extends Component {
                     </div>
                   </Animated>
                 </div>
-                <div className="col-lg-6 col-md-12">
+                <div className="col-6 col-md-6 float-left">
                   <Animated
                     animationIn="bounceInRight"
                     animationOutDelay={500}
@@ -220,20 +296,36 @@ export default class Content extends Component {
                     isVisible={this.context.index !== 1 ? false : true}
                   >
                     <div className="desc-container">
-                      <h3 className="text-justify">
-                        &nbsp;&nbsp;Hello! my name is Panji Gemilang. I’m an
-                        Informatics Engineer at Brawijaya University semester
-                        7th. I was born in Malang, December 3rd, 1998. I’m
-                        motivated about web development and android apps. I have
-                        great communication and great time management skill. You
-                        could say that I’m a religious person and it’s really
-                        helped me to control myself. <br />
-                        <br /> &nbsp; &nbsp;My current GPA is : 3.72
-                      </h3>
+                      <h5 className="text-justify">
+                        &nbsp;&nbsp;
+                        {this.context.toggleLang
+                          ? ENContent.S2_Desc
+                          : IDContent.S2_Desc}
+                      </h5>
                     </div>
                   </Animated>
                 </div>
-              </div>
+                <div className="col-12 col-md-6 float-left text-justify desc2">
+                  <Animated
+                    animationIn="bounceInRight"
+                    animationOutDelay={500}
+                    animationInDelay={800}
+                    isVisible={this.context.index !== 1 ? false : true}
+                  >
+                    <span className="desc2">
+                      &nbsp; &nbsp;
+                      {this.context.toggleLang
+                        ? ENContent.S2_Desc2
+                        : IDContent.S2_Desc2}
+                      <br />
+                      &nbsp; &nbsp;
+                      {this.context.toggleLang
+                        ? ENContent.S2_GPA
+                        : IDContent.S2_GPA}
+                    </span>
+                  </Animated>
+                </div>
+              </div>              
             </div>
           </section>
           <section id="section3">
@@ -319,7 +411,11 @@ export default class Content extends Component {
           </section>
           <section id="section4">
             <div className="text">
-              <h1>Contact Me</h1>
+              <h1 className="font-weight-bolder">
+                {this.context.toggleLang
+                  ? ENContent.S4_Title
+                  : IDContent.S4_Title}
+              </h1>
               <ul style={{ listStyle: "none" }}>
                 <li>
                   <Animated
@@ -355,7 +451,7 @@ export default class Content extends Component {
                     <a
                       href="https://linkedin.com/in/panji-g"
                       role="button"
-                      style={{ color: "inherit" }}
+                      style={{ color: "inherit", textDecoration: "underline" }}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -363,11 +459,39 @@ export default class Content extends Component {
                     </a>
                   </Animated>
                 </li>
+                <li>
+                  <Animated
+                    animationIn="bounceInLeft"
+                    animationInDelay={1300}
+                    animationOutDelay={500}
+                    isVisible={this.context.index !== 3 ? false : true}
+                  >
+                    <span className="fas fa-file"></span>
+                    &nbsp;
+                    <a
+                      href={
+                        this.context.toggleLang
+                          ? ENContent.S4_Link
+                          : IDContent.S4_Link
+                      }
+                      role="button"
+                      style={{ color: "inherit" }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {this.context.toggleLang
+                        ? ENContent.S4_Desc
+                        : IDContent.S4_Desc}
+                    </a>
+                  </Animated>
+                </li>
               </ul>
-              <footer>
-                <p id="copyright">&copy;Panji Gemilang 2019. Beta_v.0.5.1</p>
-              </footer>
             </div>
+            <footer>
+              <p id="copyright">
+                &copy;&nbsp;Panji Gemilang 2019. All right Reserved
+              </p>
+            </footer>
           </section>
         </div>
       </div>
