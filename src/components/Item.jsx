@@ -105,6 +105,7 @@ export default function Item(props) {
   React.useEffect(() => {
     if (document.getElementsByTagName("body")) {
       document.getElementsByTagName("body")[0].style.overflow = "auto"
+      document.getElementsByTagName("nav")[0].style.display = "none"
     }
 
     switch (props.match.params.post_judul) {

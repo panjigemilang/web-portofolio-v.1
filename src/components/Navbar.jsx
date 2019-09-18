@@ -160,7 +160,7 @@ export default class Navbar extends React.Component {
             <img src="/devKami.png" alt="logo.png" />
           </button>
 
-          <ul className="navbar-nav ml-auto">
+          <ul className="navbar-nav ml-auto text-white">
             <li className="nav-item">
               <a
                 className="nav-link s1 active"
@@ -209,7 +209,7 @@ export default class Navbar extends React.Component {
                     id="myonoffswitch"
                     onChange={e => this.toggleLang(e)}
                   />
-                  <label className="onoffswitch-label" for="myonoffswitch">
+                  <label className="onoffswitch-label" htmlFor="myonoffswitch">
                     <span className="onoffswitch-inner"></span>
                     <span className="onoffswitch-switch"></span>
                   </label>
@@ -274,7 +274,7 @@ export default class Navbar extends React.Component {
                 id="myonoffswitch"
                 onChange={e => this.toggleLang(e)}
               />
-              <label className="onoffswitch-label" for="myonoffswitch">
+              <label className="onoffswitch-label" htmlFor="myonoffswitch">
                 <span className="onoffswitch-inner"></span>
                 <span className="onoffswitch-switch"></span>
               </label>

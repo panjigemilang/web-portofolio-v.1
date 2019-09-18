@@ -48,6 +48,7 @@ export default class Content extends Component {
     // set Overflow Body
     if (document.getElementsByTagName("body")) {
       document.getElementsByTagName("body")[0].style.overflow = "hidden"
+      document.getElementsByTagName("nav")[0].style.display = "flex"
     }
 
     const sections = document.querySelectorAll("section")
@@ -86,7 +87,10 @@ export default class Content extends Component {
       this.sectionForEachSmooth(sections, this.context.index)
     }, 10)
 
-    console.log("Didmount", this.context.index)
+    if (this.context.index > 0 && this.context.index < 3) {
+      this.refs.up.style.opacity = 1
+      this.refs.down.style.opacity = 1
+    }
   }
 
   sectionForEachSmooth = (sections, index) => {
@@ -126,7 +130,7 @@ export default class Content extends Component {
     this.context.setIndex(this.context.index - 1)
     window.setTimeout(() => {
       this.sectionForEachSmooth(sections, this.context.index)
-    }, 10)
+    }, 250)
   }
 
   downHandler = sections => {
@@ -134,7 +138,7 @@ export default class Content extends Component {
     this.context.setIndex(this.context.index + 1)
     window.setTimeout(() => {
       this.sectionForEachSmooth(sections, this.context.index)
-    }, 10)
+    }, 250)
   }
 
   handleKeyPress = e => {
@@ -312,20 +316,18 @@ export default class Content extends Component {
                     animationInDelay={800}
                     isVisible={this.context.index !== 1 ? false : true}
                   >
-                    <span className="desc2">
-                      &nbsp; &nbsp;
-                      {this.context.toggleLang
-                        ? ENContent.S2_Desc2
-                        : IDContent.S2_Desc2}
-                      <br />
-                      &nbsp; &nbsp;
-                      {this.context.toggleLang
-                        ? ENContent.S2_GPA
-                        : IDContent.S2_GPA}
-                    </span>
+                    &nbsp;
+                    {this.context.toggleLang
+                      ? ENContent.S2_Desc2
+                      : IDContent.S2_Desc2}
+                    <br />
+                    &nbsp; &nbsp;
+                    {this.context.toggleLang
+                      ? ENContent.S2_GPA
+                      : IDContent.S2_GPA}
                   </Animated>
                 </div>
-              </div>              
+              </div>
             </div>
           </section>
           <section id="section3">
