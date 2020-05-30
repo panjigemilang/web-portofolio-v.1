@@ -25,7 +25,7 @@ export default class Content extends Component {
         S2_GPA: "IPK saya saat ini : 3.72",
         S4_Title: "Hubungi Saya",
         S4_Desc: "Lihat CV saya disini!",
-        S4_Link: "https://www.docdroid.net/Z46c4JZ/cv-september-id-2019.pdf",
+        S4_Link: "https://www.docdroid.net/i0chlcz/cv-may-2020-pdf",
       },
       ENContent: {
         S1_Title: "Welcome",
@@ -39,7 +39,7 @@ export default class Content extends Component {
         S2_GPA: "My current GPA is : 3.72",
         S4_Title: "Contact Me",
         S4_Desc: "Look at my CV here!",
-        S4_Link: "https://www.docdroid.net/SXYqpwX/cv-september.pdf",
+        S4_Link: "https://www.docdroid.net/i0chlcz/cv-may-2020-pdf",
       },
     }
   }
