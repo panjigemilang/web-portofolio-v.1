@@ -17,7 +17,7 @@ const Item = React.lazy(() => import("./components/Item"))
 
 // Components
 export default class App extends React.Component {
-  state = { index: 0, toggleLang: false }
+  state = { index: 0, toggleLang: true }
   setIndex = (data) => {
     this.setState({
       index: data,

@@ -10,17 +10,17 @@ export default class Navbar extends React.Component {
     activeToggle: 0,
     ID: {
       About: "Tentang Saya",
-      Contact: "Kontak"
+      Contact: "Kontak",
     },
     EN: {
       About: "About",
-      Contact: "Contact"
-    }
+      Contact: "Contact",
+    },
   }
 
   componentDidMount() {
     this.setState({
-      activeToggle: this.context.index
+      activeToggle: this.context.index,
     })
   }
 
@@ -47,7 +47,7 @@ export default class Navbar extends React.Component {
           }
           a[this.context.index].classList.add("active")
           this.setState({
-            activeToggle: this.context.index
+            activeToggle: this.context.index,
           })
           break
         case 1:
@@ -56,7 +56,7 @@ export default class Navbar extends React.Component {
           }
           a[this.context.index].classList.add("active")
           this.setState({
-            activeToggle: this.context.index
+            activeToggle: this.context.index,
           })
           break
         case 2:
@@ -65,7 +65,7 @@ export default class Navbar extends React.Component {
           }
           a[this.context.index].classList.add("active")
           this.setState({
-            activeToggle: this.context.index
+            activeToggle: this.context.index,
           })
           break
         case 3:
@@ -74,7 +74,7 @@ export default class Navbar extends React.Component {
           }
           a[this.context.index].classList.add("active")
           this.setState({
-            activeToggle: this.context.index
+            activeToggle: this.context.index,
           })
           break
       }
@@ -85,7 +85,7 @@ export default class Navbar extends React.Component {
     sections.forEach((section, i) => {
       if (i === index) {
         section.scrollIntoView({
-          behavior: "smooth"
+          behavior: "smooth",
         })
       }
     })
@@ -93,7 +93,7 @@ export default class Navbar extends React.Component {
 
   toggleSlideMenu = () => {
     this.setState({
-      navbarToggle: !this.state.navbarToggle
+      navbarToggle: !this.state.navbarToggle,
     })
 
     if (this.state.navbarToggle) {
@@ -113,18 +113,18 @@ export default class Navbar extends React.Component {
     document.querySelector("#side-menu a").style.opacity = 0
   }
 
-  toggleLang = e => {
+  toggleLang = (e) => {
     if (e.target.checked === this.state.checkboxToggle) {
       return
     } else {
       this.context.setLang(!this.context.toggleLang)
       this.setState({
-        checkboxToggle: !this.context.toggleLang
+        checkboxToggle: this.context.toggleLang,
       })
     }
   }
 
-  onclick = index => {
+  onclick = (index) => {
     const sections = document.querySelectorAll("section")
 
     this.context.setIndex(index)
@@ -133,7 +133,7 @@ export default class Navbar extends React.Component {
     }, 10)
   }
 
-  onSideClick = index => {
+  onSideClick = (index) => {
     const sections = document.querySelectorAll("section")
 
     this.toggleSlideMenu()
@@ -151,14 +151,14 @@ export default class Navbar extends React.Component {
           className="navbar navbar-expand-md navbar-dark bg-dark"
           id="nav-bg"
         >
-          <button
+          {/* <button
             className="nav-link"
             role="button"
             onClick={() => this.onclick(0)}
             style={{ backgroundColor: "transparent", border: "none" }}
           >
             <img src="/devKami.png" alt="logo.png" />
-          </button>
+          </button> */}
 
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">
@@ -207,7 +207,7 @@ export default class Navbar extends React.Component {
                     name="onoffswitch"
                     className="onoffswitch-checkbox"
                     id="myonoffswitch"
-                    onChange={e => this.toggleLang(e)}
+                    onChange={(e) => this.toggleLang(e)}
                   />
                   <label className="onoffswitch-label" for="myonoffswitch">
                     <span className="onoffswitch-inner"></span>
@@ -272,7 +272,7 @@ export default class Navbar extends React.Component {
                 name="onoffswitch"
                 className="onoffswitch-checkbox"
                 id="myonoffswitch"
-                onChange={e => this.toggleLang(e)}
+                onChange={(e) => this.toggleLang(e)}
               />
               <label className="onoffswitch-label" for="myonoffswitch">
                 <span className="onoffswitch-inner"></span>

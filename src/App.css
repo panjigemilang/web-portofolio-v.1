@@ -203,17 +203,17 @@ button.open-slide {
 }
 
 .onoffswitch-inner:before {
-  content: "EN";
+  content: "ID";
   padding-left: 8px;
-  background-color: #3493c2;
+  background-color: #ff0000;
   color: #ffffff;
 }
 
 .onoffswitch-inner:after {
-  content: "ID";
-  padding-right: 8px;
-  background-color: #ff0000;
+  content: "EN";
   color: #ffffff;
+  padding-right: 8px;
+  background-color: #3493c2;
   text-align: right;
 }
 
@@ -338,20 +338,21 @@ section .text {
 
 /* SECTION: Section One */
 section:nth-child(1) {
-  background-image: url("./img/Webp.net-compress-image.jpg");
+  /* background-image: url("./img/Webp.net-compress-image.jpg"); */
+  background-color: #457b9d;
   background-size: cover;
   background-attachment: fixed;
   position: relative;
 }
 
 section:nth-child(1) h1 {
-  border-bottom: 2px rgba(35, 62, 104, 0.643) solid;
+  border-bottom: 2px rgb(168, 218, 220, 0.643) solid;
   width: 100%;
 }
 
 section:nth-child(1) .text {
   margin-left: -10vh;
-  color: #0b1c3e;
+  color: #a8dadc;
 }
 
 canvas {
@@ -416,7 +417,8 @@ canvas {
 
 /* SECTION: section Two (2) */
 section:nth-child(2) {
-  background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+  /* background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%); */
+  background-color: #3e9b9e;
   color: white;
 }
 
@@ -548,7 +550,7 @@ section:nth-child(2) p {
 
 .img-box:hover .text-content-container::before {
   opacity: 1;
-  background: rgba(167, 53, 53, 0.602);
+  background: rgba(10, 115, 156, 0.602);
   transform: translateX(-0%) scale(1) skew(-45deg);
 }
 
@@ -566,7 +568,8 @@ section:nth-child(2) .desc2-m {
 
 /* SECTION: Section Three (3) */
 section:nth-child(3) {
-  background-image: linear-gradient(to top, #ebbba7 0%, #cfc7f8 100%);
+  /* background-image: linear-gradient(to top, #ebbba7 0%, #cfc7f8 100%); */
+  background-color: #a8dadc;
 }
 
 section:nth-child(3) .text {

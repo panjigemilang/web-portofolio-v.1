@@ -430,7 +430,9 @@ export default class Content extends Component {
                         width="50px"
                         heigth="20px"
                       />
-                      <div className="overlay-content">Papa Blog (WIP)</div>
+                      <div className="overlay-content" style={{ top: "30%" }}>
+                        Papa Blog <p>(Work in Progress)</p>
+                      </div>
                     </div>
                   </Animated>
                 </div>
@@ -517,7 +519,7 @@ export default class Content extends Component {
             </div>
             <footer>
               <p id="copyright">
-                &copy;&nbsp;Panji Gemilang 2020. All Rights Reserved
+                &copy;&nbsp;Panji Gemilang 2019. All Rights Reserved
               </p>
             </footer>
           </section>
